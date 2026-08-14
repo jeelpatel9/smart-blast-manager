@@ -65,7 +65,7 @@ export function renderTemplate(template: string, vars: TemplateVars) {
 export function templateVariables(template: string) {
   const found = new Set<string>();
   for (const match of template.matchAll(/\{\{\s*([a-zA-Z0-9_]+)\s*\}\}/g)) {
-    found.add(match[1]);
+    if (match[1]) found.add(match[1]);
   }
   return [...found];
 }
