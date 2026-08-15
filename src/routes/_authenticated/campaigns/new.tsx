@@ -25,9 +25,8 @@ type ContactRow = Database["public"]["Tables"]["contacts"]["Row"];
 type MediaRow = Database["public"]["Tables"]["media"]["Row"];
 
 export const Route = createFileRoute("/_authenticated/campaigns/new")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    template: typeof search.template === "string" ? search.template : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>): { template?: string } =>
+    typeof search["template"] === "string" ? { template: search["template"] } : {},
   head: () => ({
     meta: [
       { title: "New Campaign — WhatsApp Campaign Manager" },
