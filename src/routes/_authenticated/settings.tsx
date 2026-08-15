@@ -11,13 +11,24 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import type { Json } from "@/integrations/supabase/types";
 
 export const Route = createFileRoute("/_authenticated/settings")({
   head: () => ({
     meta: [
       { title: "Settings — WhatsApp Campaign Manager" },
-      { name: "description", content: "System configuration, WhatsApp webhook options, and administrator roles." },
+      {
+        name: "description",
+        content: "System configuration, WhatsApp webhook options, and administrator roles.",
+      },
     ],
   }),
   component: SettingsPage,
@@ -72,7 +83,8 @@ function SettingsPage() {
       settingsList.forEach((setting) => {
         if (setting.key === "whatsapp_api_key") setWhatsappApiKey(String(setting.value || ""));
         if (setting.key === "webhook_secret") setWebhookSecret(String(setting.value || ""));
-        if (setting.key === "default_country_code") setDefaultCountryCode(String(setting.value || "+1"));
+        if (setting.key === "default_country_code")
+          setDefaultCountryCode(String(setting.value || "+1"));
         if (setting.key === "max_batch_rate") setMaxBatchRate(String(setting.value || "50"));
       });
     }
@@ -90,7 +102,7 @@ function SettingsPage() {
       for (const item of items) {
         const { error } = await supabase
           .from("app_settings")
-          .upsert({ key: item.key, value: item.value as any }, { onConflict: "key" });
+          .upsert({ key: item.key, value: item.value as Json }, { onConflict: "key" });
         if (error) throw error;
       }
     },

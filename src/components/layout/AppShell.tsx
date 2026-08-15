@@ -78,7 +78,9 @@ export function AppShell({ children, email }: { children: ReactNode; email?: str
               pathname === item.to ||
               (item.to !== "/dashboard" &&
                 pathname.startsWith(item.to) &&
-                !nav.some((n) => n.to !== item.to && n.to.startsWith(item.to) && pathname === n.to));
+                !nav.some(
+                  (n) => n.to !== item.to && n.to.startsWith(item.to) && pathname === n.to,
+                ));
             return (
               <Link
                 key={item.to}
@@ -117,7 +119,12 @@ export function AppShell({ children, email }: { children: ReactNode; email?: str
 
       <div className="lg:pl-64">
         <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-border bg-background/85 px-4 py-3 backdrop-blur lg:hidden">
-          <Button variant="ghost" size="icon" onClick={() => setOpen(true)} aria-label="Open navigation">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setOpen(true)}
+            aria-label="Open navigation"
+          >
             <Menu className="size-5" />
           </Button>
           <span className="text-sm font-semibold">Campaign Manager</span>

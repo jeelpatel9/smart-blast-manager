@@ -31,7 +31,10 @@ export const Route = createFileRoute("/_authenticated/campaigns/new")({
   head: () => ({
     meta: [
       { title: "New Campaign — WhatsApp Campaign Manager" },
-      { name: "description", content: "Create a new broadcast campaign with personalized WhatsApp variables." },
+      {
+        name: "description",
+        content: "Create a new broadcast campaign with personalized WhatsApp variables.",
+      },
     ],
   }),
   component: NewCampaignPage,
@@ -46,7 +49,7 @@ function NewCampaignPage() {
   const [selectedMediaId, setSelectedMediaId] = useState<string>("");
   const [imageUrl, setImageUrl] = useState("");
   const [message, setMessage] = useState(
-    searchParams.template || "Hi {{name}}! We have an exclusive update for your {{product}} plan."
+    searchParams.template || "Hi {{name}}! We have an exclusive update for your {{product}} plan.",
   );
   const [targetStatus, setTargetStatus] = useState<string>("ACTIVE");
   const [targetProduct, setTargetProduct] = useState<string>("ALL");
@@ -54,7 +57,10 @@ function NewCampaignPage() {
   const { data: mediaList = [] } = useQuery({
     queryKey: ["media-items"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("media").select("*").order("created_at", { ascending: false });
+      const { data, error } = await supabase
+        .from("media")
+        .select("*")
+        .order("created_at", { ascending: false });
       if (error) throw error;
       return data || [];
     },
@@ -77,7 +83,9 @@ function NewCampaignPage() {
   });
 
   // Unique products for filter select
-  const uniqueProducts = Array.from(new Set(contacts.map((c) => c.product).filter(Boolean))) as string[];
+  const uniqueProducts = Array.from(
+    new Set(contacts.map((c) => c.product).filter(Boolean)),
+  ) as string[];
 
   // Selected media object
   const currentMedia = mediaList.find((m) => m.id === selectedMediaId);
@@ -152,7 +160,9 @@ function NewCampaignPage() {
         }),
       }));
 
-      const { error: recError } = await supabase.from("campaign_recipients").insert(recipientInserts);
+      const { error: recError } = await supabase
+        .from("campaign_recipients")
+        .insert(recipientInserts);
       if (recError) throw recError;
 
       // Insert activity log
@@ -242,7 +252,8 @@ function NewCampaignPage() {
             <CardHeader>
               <CardTitle>Message Template</CardTitle>
               <CardDescription>
-                Use variable tokens like <code className="rounded bg-muted px-1">{"{{name}}"}</code> to personalize broadcast for each recipient.
+                Use variable tokens like <code className="rounded bg-muted px-1">{"{{name}}"}</code>{" "}
+                to personalize broadcast for each recipient.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -320,11 +331,12 @@ function NewCampaignPage() {
             >
               Save as Draft
             </Button>
-            <Button
-              disabled={saveMutation.isPending}
-              onClick={() => saveMutation.mutate("READY")}
-            >
-              {saveMutation.isPending ? <Loader2 className="mr-2 size-4 animate-spin" /> : <Check className="mr-2 size-4" />}
+            <Button disabled={saveMutation.isPending} onClick={() => saveMutation.mutate("READY")}>
+              {saveMutation.isPending ? (
+                <Loader2 className="mr-2 size-4 animate-spin" />
+              ) : (
+                <Check className="mr-2 size-4" />
+              )}
               Save & Mark Ready
             </Button>
           </div>

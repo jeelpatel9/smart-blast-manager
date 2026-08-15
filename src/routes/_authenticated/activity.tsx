@@ -7,13 +7,15 @@ import { supabase } from "@/integrations/supabase/client";
 import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import type { Database } from "@/integrations/supabase/types";
 
 type ActivityLogRow = Database["public"]["Tables"]["activity_logs"]["Row"];
@@ -22,7 +24,10 @@ export const Route = createFileRoute("/_authenticated/activity")({
   head: () => ({
     meta: [
       { title: "Activity Logs — WhatsApp Campaign Manager" },
-      { name: "description", content: "Audit trail and event log of admin operations in Smart Blast Manager." },
+      {
+        name: "description",
+        content: "Audit trail and event log of admin operations in Smart Blast Manager.",
+      },
     ],
   }),
   component: ActivityLogsPage,
@@ -103,7 +108,12 @@ function ActivityLogsPage() {
                     {log.entity_id ? log.entity_id.slice(0, 8) + "..." : "—"}
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button variant="ghost" size="sm" className="h-8 text-xs" onClick={() => setSelectedLog(log)}>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 text-xs"
+                      onClick={() => setSelectedLog(log)}
+                    >
                       <Code className="mr-1 size-3.5" /> Payload
                     </Button>
                   </TableCell>

@@ -26,7 +26,10 @@ export const Route = createFileRoute("/_authenticated/media")({
   head: () => ({
     meta: [
       { title: "Media Library — WhatsApp Campaign Manager" },
-      { name: "description", content: "Upload and manage promotional image assets for WhatsApp broadcasts." },
+      {
+        name: "description",
+        content: "Upload and manage promotional image assets for WhatsApp broadcasts.",
+      },
     ],
   }),
   component: MediaLibraryPage,
@@ -102,8 +105,8 @@ function MediaLibraryPage() {
 
       toast.success("Image uploaded successfully!");
       queryClient.invalidateQueries({ queryKey: ["media-items"] });
-    } catch (err: any) {
-      toast.error(err.message || "Failed to upload image");
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "Failed to upload image");
     } finally {
       setUploading(false);
       e.target.value = "";
@@ -140,7 +143,11 @@ function MediaLibraryPage() {
         description="Upload images to include as headers in your WhatsApp broadcast messages."
         actions={
           <label className="inline-flex cursor-pointer items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow transition-opacity hover:opacity-90">
-            {uploading ? <Loader2 className="mr-2 size-4 animate-spin" /> : <Upload className="mr-2 size-4" />}
+            {uploading ? (
+              <Loader2 className="mr-2 size-4 animate-spin" />
+            ) : (
+              <Upload className="mr-2 size-4" />
+            )}
             Upload Image
             <input
               type="file"
@@ -160,7 +167,9 @@ function MediaLibraryPage() {
             <div className="grid size-12 place-items-center rounded-full bg-primary/10 text-primary">
               <ImageIcon className="size-6" />
             </div>
-            <p className="mt-3 text-sm font-semibold">Click or drag image to upload to media library</p>
+            <p className="mt-3 text-sm font-semibold">
+              Click or drag image to upload to media library
+            </p>
             <p className="mt-1 text-xs text-muted-foreground">PNG, JPG, WEBP up to 5MB</p>
             <input
               type="file"
@@ -200,11 +209,16 @@ function MediaLibraryPage() {
                 )}
               </div>
               <CardContent className="p-3">
-                <p className="truncate font-semibold text-xs text-foreground" title={item.file_name}>
+                <p
+                  className="truncate font-semibold text-xs text-foreground"
+                  title={item.file_name}
+                >
                   {item.file_name}
                 </p>
                 <div className="mt-1 flex items-center justify-between text-[11px] text-muted-foreground">
-                  <span>{item.size_bytes ? `${Math.round(item.size_bytes / 1024)} KB` : "Image"}</span>
+                  <span>
+                    {item.size_bytes ? `${Math.round(item.size_bytes / 1024)} KB` : "Image"}
+                  </span>
                   <span>{new Date(item.created_at).toLocaleDateString()}</span>
                 </div>
                 <div className="mt-3 flex items-center justify-between border-t border-border pt-2">
@@ -237,8 +251,8 @@ function MediaLibraryPage() {
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Media File?</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete <strong>{deletingMedia?.file_name}</strong>?
-              Campaigns using this image header will no longer display it.
+              Are you sure you want to delete <strong>{deletingMedia?.file_name}</strong>? Campaigns
+              using this image header will no longer display it.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

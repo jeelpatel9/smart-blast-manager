@@ -24,7 +24,10 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
     meta: [
       { title: "Dashboard — WhatsApp Campaign Manager" },
-      { name: "description", content: "WhatsApp campaign metrics, contact counts, and broadcast status." },
+      {
+        name: "description",
+        content: "WhatsApp campaign metrics, contact counts, and broadcast status.",
+      },
     ],
   }),
   component: DashboardPage,
@@ -61,7 +64,8 @@ function DashboardPage() {
       const { data, error } = await supabase.from("messages").select("status");
       if (error) throw error;
       const totalSent = data?.length || 0;
-      const delivered = data?.filter((m) => m.status === "DELIVERED" || m.status === "READ").length || 0;
+      const delivered =
+        data?.filter((m) => m.status === "DELIVERED" || m.status === "READ").length || 0;
       const read = data?.filter((m) => m.status === "READ").length || 0;
       return { totalSent, delivered, read };
     },
@@ -121,7 +125,9 @@ function DashboardPage() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Total Contacts</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              Total Contacts
+            </CardTitle>
             <div className="grid size-8 place-items-center rounded-lg bg-emerald-500/10 text-emerald-600">
               <Users className="size-4" />
             </div>
@@ -147,7 +153,9 @@ function DashboardPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Messages Sent</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              Messages Sent
+            </CardTitle>
             <div className="grid size-8 place-items-center rounded-lg bg-indigo-500/10 text-indigo-600">
               <Send className="size-4" />
             </div>
@@ -167,7 +175,9 @@ function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{readRate}%</div>
-            <p className="mt-1 text-xs text-muted-foreground">{messagesStats.read.toLocaleString()} messages read</p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              {messagesStats.read.toLocaleString()} messages read
+            </p>
           </CardContent>
         </Card>
       </div>
@@ -194,10 +204,17 @@ function DashboardPage() {
             ) : (
               <div className="divide-y divide-border">
                 {campaigns.map((c) => (
-                  <div key={c.id} className="flex flex-wrap items-center justify-between gap-4 py-3.5 first:pt-0 last:pb-0">
+                  <div
+                    key={c.id}
+                    className="flex flex-wrap items-center justify-between gap-4 py-3.5 first:pt-0 last:pb-0"
+                  >
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
-                        <Link to="/campaigns/$id" params={{ id: c.id }} className="font-semibold hover:underline">
+                        <Link
+                          to="/campaigns/$id"
+                          params={{ id: c.id }}
+                          className="font-semibold hover:underline"
+                        >
                           {c.name}
                         </Link>
                         <StatusBadge status={c.status} tone={campaignStatusTone[c.status]} />
@@ -243,7 +260,9 @@ function DashboardPage() {
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="font-semibold text-foreground">{log.action}</p>
-                      <p className="text-muted-foreground">{new Date(log.created_at).toLocaleString()}</p>
+                      <p className="text-muted-foreground">
+                        {new Date(log.created_at).toLocaleString()}
+                      </p>
                     </div>
                   </div>
                 ))}

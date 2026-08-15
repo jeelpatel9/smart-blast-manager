@@ -122,7 +122,13 @@ function AuthPage() {
                 We sent a confirmation link to <strong>{email}</strong>. Click it to activate your
                 administrator account, then sign in.
               </p>
-              <Button variant="outline" onClick={() => { setCheckEmail(false); setMode("signin"); }}>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setCheckEmail(false);
+                  setMode("signin");
+                }}
+              >
                 Back to sign in
               </Button>
             </div>
@@ -184,7 +190,12 @@ function AuthPage() {
                 <span className="h-px flex-1 bg-border" />
               </div>
 
-              <Button variant="outline" className="w-full" onClick={handleGoogle} disabled={loading}>
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={handleGoogle}
+                disabled={loading}
+              >
                 Continue with Google
               </Button>
 

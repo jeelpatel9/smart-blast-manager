@@ -17,7 +17,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -36,7 +43,10 @@ export const Route = createFileRoute("/_authenticated/campaigns/")({
   head: () => ({
     meta: [
       { title: "Campaigns — WhatsApp Campaign Manager" },
-      { name: "description", content: "List and manage WhatsApp broadcast campaigns and delivery workflows." },
+      {
+        name: "description",
+        content: "List and manage WhatsApp broadcast campaigns and delivery workflows.",
+      },
     ],
   }),
   component: CampaignsPage,
@@ -107,7 +117,8 @@ function CampaignsPage() {
   const filteredCampaigns = campaigns.filter((c) => {
     const matchesStatus = statusFilter === "ALL" || c.status === statusFilter;
     const q = search.toLowerCase();
-    const matchesSearch = !q || c.name.toLowerCase().includes(q) || c.message.toLowerCase().includes(q);
+    const matchesSearch =
+      !q || c.name.toLowerCase().includes(q) || c.message.toLowerCase().includes(q);
     return matchesStatus && matchesSearch;
   });
 
@@ -230,7 +241,10 @@ function CampaignsPage() {
       </div>
 
       {/* Delete Confirmation Alert */}
-      <AlertDialog open={!!deletingCampaign} onOpenChange={(open) => !open && setDeletingCampaign(null)}>
+      <AlertDialog
+        open={!!deletingCampaign}
+        onOpenChange={(open) => !open && setDeletingCampaign(null)}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Campaign?</AlertDialogTitle>

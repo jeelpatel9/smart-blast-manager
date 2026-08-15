@@ -16,13 +16,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import type { Database } from "@/integrations/supabase/types";
 
 type MessageRow = Database["public"]["Tables"]["messages"]["Row"];
@@ -31,7 +33,10 @@ export const Route = createFileRoute("/_authenticated/messages")({
   head: () => ({
     meta: [
       { title: "Message History — WhatsApp Campaign Manager" },
-      { name: "description", content: "View delivery logs, timestamp history, and message details." },
+      {
+        name: "description",
+        content: "View delivery logs, timestamp history, and message details.",
+      },
     ],
   }),
   component: MessagesPage,
@@ -140,10 +145,17 @@ function MessagesPage() {
                     <StatusBadge status={m.status} tone={messageStatusTone[m.status]} />
                   </TableCell>
                   <TableCell className="text-xs">
-                    {m.sent_at ? new Date(m.sent_at).toLocaleString() : new Date(m.created_at).toLocaleString()}
+                    {m.sent_at
+                      ? new Date(m.sent_at).toLocaleString()
+                      : new Date(m.created_at).toLocaleString()}
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button variant="ghost" size="sm" className="h-8 text-xs" onClick={() => setSelectedMessage(m)}>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 text-xs"
+                      onClick={() => setSelectedMessage(m)}
+                    >
                       <Eye className="mr-1 size-3.5" /> Details
                     </Button>
                   </TableCell>
@@ -165,7 +177,9 @@ function MessagesPage() {
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <div>
                   <span className="text-muted-foreground">Recipient: </span>
-                  <strong className="block font-semibold">{selectedMessage.contacts?.name || "Unknown"}</strong>
+                  <strong className="block font-semibold">
+                    {selectedMessage.contacts?.name || "Unknown"}
+                  </strong>
                 </div>
                 <div>
                   <span className="text-muted-foreground">Phone: </span>
@@ -176,13 +190,20 @@ function MessagesPage() {
               <div>
                 <span className="text-xs text-muted-foreground">Status: </span>
                 <div className="mt-1">
-                  <StatusBadge status={selectedMessage.status} tone={messageStatusTone[selectedMessage.status]} />
+                  <StatusBadge
+                    status={selectedMessage.status}
+                    tone={messageStatusTone[selectedMessage.status]}
+                  />
                 </div>
               </div>
 
               {selectedMessage.image_url ? (
                 <div className="max-h-40 overflow-hidden rounded-lg border border-border">
-                  <img src={selectedMessage.image_url} alt="Attached header" className="w-full object-cover" />
+                  <img
+                    src={selectedMessage.image_url}
+                    alt="Attached header"
+                    className="w-full object-cover"
+                  />
                 </div>
               ) : null}
 
@@ -194,11 +215,19 @@ function MessagesPage() {
               </div>
 
               <div className="space-y-1 text-[11px] text-muted-foreground border-t border-border pt-3">
-                {selectedMessage.sent_at ? <div>Sent: {new Date(selectedMessage.sent_at).toLocaleString()}</div> : null}
-                {selectedMessage.delivered_at ? <div>Delivered: {new Date(selectedMessage.delivered_at).toLocaleString()}</div> : null}
-                {selectedMessage.read_at ? <div>Read: {new Date(selectedMessage.read_at).toLocaleString()}</div> : null}
+                {selectedMessage.sent_at ? (
+                  <div>Sent: {new Date(selectedMessage.sent_at).toLocaleString()}</div>
+                ) : null}
+                {selectedMessage.delivered_at ? (
+                  <div>Delivered: {new Date(selectedMessage.delivered_at).toLocaleString()}</div>
+                ) : null}
+                {selectedMessage.read_at ? (
+                  <div>Read: {new Date(selectedMessage.read_at).toLocaleString()}</div>
+                ) : null}
                 {selectedMessage.error_message ? (
-                  <div className="text-destructive font-semibold">Error: {selectedMessage.error_message}</div>
+                  <div className="text-destructive font-semibold">
+                    Error: {selectedMessage.error_message}
+                  </div>
                 ) : null}
               </div>
             </div>

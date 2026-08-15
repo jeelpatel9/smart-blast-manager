@@ -8,13 +8,23 @@ import { supabase } from "@/integrations/supabase/client";
 import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export const Route = createFileRoute("/_authenticated/contacts/import")({
   head: () => ({
     meta: [
       { title: "Import Contacts — WhatsApp Campaign Manager" },
-      { name: "description", content: "Bulk import contacts via CSV spreadsheet into WhatsApp manager." },
+      {
+        name: "description",
+        content: "Bulk import contacts via CSV spreadsheet into WhatsApp manager.",
+      },
     ],
   }),
   component: ContactsImportPage,
@@ -78,12 +88,16 @@ function ContactsImportPage() {
       const headers = parseCSVLine(lines[0]).map((h) => h.toLowerCase().replace(/[^a-z0-9]/g, ""));
 
       const nameIdx = headers.findIndex((h) => h.includes("name"));
-      const phoneIdx = headers.findIndex((h) => h.includes("phone") || h.includes("mobile") || h.includes("number"));
+      const phoneIdx = headers.findIndex(
+        (h) => h.includes("phone") || h.includes("mobile") || h.includes("number"),
+      );
       const emailIdx = headers.findIndex((h) => h.includes("email"));
       const cityIdx = headers.findIndex((h) => h.includes("city"));
       const stateIdx = headers.findIndex((h) => h.includes("state") || h.includes("region"));
       const companyIdx = headers.findIndex((h) => h.includes("company") || h.includes("org"));
-      const productIdx = headers.findIndex((h) => h.includes("product") || h.includes("service") || h.includes("plan"));
+      const productIdx = headers.findIndex(
+        (h) => h.includes("product") || h.includes("service") || h.includes("plan"),
+      );
 
       const rows: ParsedContact[] = [];
 
@@ -111,7 +125,11 @@ function ContactsImportPage() {
           company,
           product,
           isValid,
-          error: !name ? "Missing name" : cleanPhone.length < 7 ? "Invalid phone format" : undefined,
+          error: !name
+            ? "Missing name"
+            : cleanPhone.length < 7
+              ? "Invalid phone format"
+              : undefined,
         });
       }
 
@@ -180,7 +198,8 @@ function ContactsImportPage() {
         <CardHeader>
           <CardTitle>Upload CSV File</CardTitle>
           <CardDescription>
-            Select a CSV file containing columns for Name, Phone, Email, City, State, Company, Product.
+            Select a CSV file containing columns for Name, Phone, Email, City, State, Company,
+            Product.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -210,14 +229,19 @@ function ContactsImportPage() {
             <div>
               <CardTitle>Preview Import Data</CardTitle>
               <CardDescription>
-                Found {parsedRows.length} rows ({validCount} valid, {parsedRows.length - validCount} invalid)
+                Found {parsedRows.length} rows ({validCount} valid, {parsedRows.length - validCount}{" "}
+                invalid)
               </CardDescription>
             </div>
             <Button
               disabled={validCount === 0 || importMutation.isPending}
               onClick={() => importMutation.mutate()}
             >
-              {importMutation.isPending ? <Loader2 className="mr-2 size-4 animate-spin" /> : <Check className="mr-2 size-4" />}
+              {importMutation.isPending ? (
+                <Loader2 className="mr-2 size-4 animate-spin" />
+              ) : (
+                <Check className="mr-2 size-4" />
+              )}
               Import {validCount} Valid Contacts
             </Button>
           </CardHeader>

@@ -21,19 +21,24 @@ import { StatusBadge } from "@/components/StatusBadge";
 import { campaignStatusTone, messageStatusTone } from "@/lib/campaign";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/_authenticated/campaigns/$id")({
   head: () => ({
     meta: [
       { title: "Campaign Detail — WhatsApp Campaign Manager" },
-      { name: "description", content: "Inspect broadcast status, campaign recipient metrics, and message dispatch." },
+      {
+        name: "description",
+        content: "Inspect broadcast status, campaign recipient metrics, and message dispatch.",
+      },
     ],
   }),
   component: CampaignDetailPage,
@@ -127,10 +132,7 @@ function CampaignDetailPage() {
       }
 
       // Mark campaign COMPLETED
-      await supabase
-        .from("campaigns")
-        .update({ status: "COMPLETED", sent_at: now })
-        .eq("id", id);
+      await supabase.from("campaigns").update({ status: "COMPLETED", sent_at: now }).eq("id", id);
 
       await supabase.from("activity_logs").insert({
         action: "campaign.sent",
@@ -208,12 +210,18 @@ function CampaignDetailPage() {
                 disabled={approveMutation.isPending}
                 onClick={() => approveMutation.mutate()}
               >
-                {approveMutation.isPending ? <Loader2 className="mr-2 size-4 animate-spin" /> : <CheckCircle2 className="mr-2 size-4" />}
+                {approveMutation.isPending ? (
+                  <Loader2 className="mr-2 size-4 animate-spin" />
+                ) : (
+                  <CheckCircle2 className="mr-2 size-4" />
+                )}
                 Approve Campaign
               </Button>
             ) : null}
 
-            {campaign.status === "APPROVED" || campaign.status === "READY" || campaign.status === "DRAFT" ? (
+            {campaign.status === "APPROVED" ||
+            campaign.status === "READY" ||
+            campaign.status === "DRAFT" ? (
               <Button
                 disabled={launchBroadcastMutation.isPending}
                 onClick={() => launchBroadcastMutation.mutate()}
@@ -240,7 +248,11 @@ function CampaignDetailPage() {
 
       {/* Header Status & KPI metrics */}
       <div className="flex items-center gap-3 rounded-xl border border-border bg-card p-4">
-        <StatusBadge status={campaign.status} tone={campaignStatusTone[campaign.status]} className="text-sm px-3 py-1" />
+        <StatusBadge
+          status={campaign.status}
+          tone={campaignStatusTone[campaign.status]}
+          className="text-sm px-3 py-1"
+        />
         <span className="text-xs text-muted-foreground">
           Created on {new Date(campaign.created_at).toLocaleString()}
         </span>
@@ -253,11 +265,15 @@ function CampaignDetailPage() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         <Card>
-          <CardHeader className="pb-2 text-xs font-medium text-muted-foreground">Total Target</CardHeader>
+          <CardHeader className="pb-2 text-xs font-medium text-muted-foreground">
+            Total Target
+          </CardHeader>
           <CardContent className="text-xl font-bold">{recipients.length}</CardContent>
         </Card>
         <Card>
-          <CardHeader className="pb-2 text-xs font-medium text-muted-foreground">Pending</CardHeader>
+          <CardHeader className="pb-2 text-xs font-medium text-muted-foreground">
+            Pending
+          </CardHeader>
           <CardContent className="text-xl font-bold text-amber-600">{pendingCount}</CardContent>
         </Card>
         <Card>
@@ -265,7 +281,9 @@ function CampaignDetailPage() {
           <CardContent className="text-xl font-bold text-blue-600">{sentCount}</CardContent>
         </Card>
         <Card>
-          <CardHeader className="pb-2 text-xs font-medium text-muted-foreground">Delivered / Read</CardHeader>
+          <CardHeader className="pb-2 text-xs font-medium text-muted-foreground">
+            Delivered / Read
+          </CardHeader>
           <CardContent className="text-xl font-bold text-emerald-600">
             {deliveredCount + readCount}
           </CardContent>
@@ -305,7 +323,9 @@ function CampaignDetailPage() {
               <Loader2 className="size-6 animate-spin text-muted-foreground" />
             </div>
           ) : recipients.length === 0 ? (
-            <div className="p-8 text-center text-sm text-muted-foreground">No recipients found.</div>
+            <div className="p-8 text-center text-sm text-muted-foreground">
+              No recipients found.
+            </div>
           ) : (
             <Table>
               <TableHeader>
@@ -333,7 +353,9 @@ function CampaignDetailPage() {
                         variant="ghost"
                         size="sm"
                         className="h-8 text-xs"
-                        onClick={() => setSelectedRecipientMsg(r.rendered_message || campaign.message)}
+                        onClick={() =>
+                          setSelectedRecipientMsg(r.rendered_message || campaign.message)
+                        }
                       >
                         <Eye className="mr-1 size-3.5" /> View
                       </Button>
@@ -347,7 +369,10 @@ function CampaignDetailPage() {
       </Card>
 
       {/* View Rendered Message Modal */}
-      <Dialog open={!!selectedRecipientMsg} onOpenChange={(open) => !open && setSelectedRecipientMsg(null)}>
+      <Dialog
+        open={!!selectedRecipientMsg}
+        onOpenChange={(open) => !open && setSelectedRecipientMsg(null)}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Personalized WhatsApp Message</DialogTitle>

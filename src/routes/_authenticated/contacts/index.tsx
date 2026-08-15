@@ -47,7 +47,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import type { Database } from "@/integrations/supabase/types";
 
 type ContactRow = Database["public"]["Tables"]["contacts"]["Row"];
@@ -333,7 +340,9 @@ function ContactsPage() {
                       <Label htmlFor="status">Status</Label>
                       <Select
                         value={formData.status}
-                        onValueChange={(val) => setFormData({ ...formData, status: val as ContactStatus })}
+                        onValueChange={(val) =>
+                          setFormData({ ...formData, status: val as ContactStatus })
+                        }
                       >
                         <SelectTrigger id="status">
                           <SelectValue />
@@ -351,7 +360,9 @@ function ContactsPage() {
                       Cancel
                     </Button>
                     <Button type="submit" disabled={createMutation.isPending}>
-                      {createMutation.isPending ? <Loader2 className="size-4 animate-spin" /> : null}
+                      {createMutation.isPending ? (
+                        <Loader2 className="size-4 animate-spin" />
+                      ) : null}
                       Save Contact
                     </Button>
                   </DialogFooter>
@@ -527,7 +538,9 @@ function ContactsPage() {
                 <Label htmlFor="edit-status">Status</Label>
                 <Select
                   value={formData.status}
-                  onValueChange={(val) => setFormData({ ...formData, status: val as ContactStatus })}
+                  onValueChange={(val) =>
+                    setFormData({ ...formData, status: val as ContactStatus })
+                  }
                 >
                   <SelectTrigger id="edit-status">
                     <SelectValue />
@@ -554,7 +567,10 @@ function ContactsPage() {
       </Dialog>
 
       {/* Delete Confirmation Alert */}
-      <AlertDialog open={!!deletingContact} onOpenChange={(open) => !open && setDeletingContact(null)}>
+      <AlertDialog
+        open={!!deletingContact}
+        onOpenChange={(open) => !open && setDeletingContact(null)}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Contact?</AlertDialogTitle>

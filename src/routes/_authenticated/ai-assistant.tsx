@@ -21,7 +21,10 @@ export const Route = createFileRoute("/_authenticated/ai-assistant")({
   head: () => ({
     meta: [
       { title: "AI Assistant — WhatsApp Campaign Manager" },
-      { name: "description", content: "Generate optimized WhatsApp campaign text templates with AI assistance." },
+      {
+        name: "description",
+        content: "Generate optimized WhatsApp campaign text templates with AI assistance.",
+      },
     ],
   }),
   component: AIAssistantPage,
