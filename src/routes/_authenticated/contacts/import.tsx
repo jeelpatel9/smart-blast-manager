@@ -95,7 +95,8 @@ function ContactsImportPage() {
           };
 
           const name =
-            getKeyVal(["name", "customer", "contact"]) || String((keys[0] ? row[keys[0]] : "") || "").trim();
+            getKeyVal(["name", "customer", "contact"]) ||
+            String((keys[0] ? row[keys[0]] : "") || "").trim();
           const rawPhone =
             getKeyVal(["phone", "mobile", "number", "whatsapp"]) ||
             String((keys[1] ? row[keys[1]] : "") || "").trim();

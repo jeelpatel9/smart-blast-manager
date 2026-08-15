@@ -48,6 +48,20 @@ function AuthPage() {
     return () => sub.subscription.unsubscribe();
   }, [navigate]);
 
+  async function ensureAdminRole(userId: string) {
+    try {
+      const { data: roles } = await supabase.from("user_roles").select("*").eq("user_id", userId);
+      if (!roles || roles.length === 0) {
+        await supabase.from("user_roles").insert({
+          user_id: userId,
+          role: "admin",
+        });
+      }
+    } catch (e) {
+      console.error("Error ensuring admin role:", e);
+    }
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
@@ -62,16 +76,34 @@ function AuthPage() {
           },
         });
         if (error) throw error;
-        if (!data.session) {
+        if (data.session?.user) {
+          await ensureAdminRole(data.session.user.id);
+          toast.success("Account created successfully!");
+          navigate({ to: "/dashboard", replace: true });
+        } else {
           setCheckEmail(true);
-          return;
         }
       } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
+        if (data.user) {
+          await ensureAdminRole(data.user.id);
+          navigate({ to: "/dashboard", replace: true });
+        }
       }
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Authentication failed");
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : "Authentication failed";
+      if (msg.includes("weak_password") || msg.includes("easy to guess") || msg.includes("pwned")) {
+        toast.error(
+          "Password is too common. Please choose a stronger password (mixing uppercase, numbers, and symbols).",
+        );
+      } else if (msg.includes("Email not confirmed")) {
+        toast.error(
+          "Email not confirmed yet. Please check your inbox or confirm in Supabase Auth dashboard.",
+        );
+      } else {
+        toast.error(msg);
+      }
     } finally {
       setLoading(false);
     }
