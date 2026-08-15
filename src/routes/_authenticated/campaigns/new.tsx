@@ -25,9 +25,8 @@ type ContactRow = Database["public"]["Tables"]["contacts"]["Row"];
 type MediaRow = Database["public"]["Tables"]["media"]["Row"];
 
 export const Route = createFileRoute("/_authenticated/campaigns/new")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    template: typeof search.template === "string" ? search.template : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>): { template?: string } =>
+    typeof search["template"] === "string" ? { template: search["template"] } : {},
   head: () => ({
     meta: [
       { title: "New Campaign — WhatsApp Campaign Manager" },
@@ -137,7 +136,7 @@ function NewCampaignPage() {
           status,
           total_recipients: targetedContacts.length,
           recipient_filters: { status: targetStatus, product: targetProduct },
-          created_by: user.user?.id,
+          created_by: user.user?.id ?? null,
         })
         .select()
         .single();
@@ -170,7 +169,7 @@ function NewCampaignPage() {
         action: "campaign.created",
         entity_type: "campaigns",
         entity_id: campaign.id,
-        user_id: user.user?.id,
+        user_id: user.user?.id ?? null,
         details: { name: campaign.name, recipients: targetedContacts.length, status },
       });
 

@@ -27,7 +27,10 @@ import {
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import type { Database } from "@/integrations/supabase/types";
 
-type MessageRow = Database["public"]["Tables"]["messages"]["Row"];
+type MessageRow = Database["public"]["Tables"]["messages"]["Row"] & {
+  contacts?: { name: string | null } | null;
+  campaigns?: { name: string | null } | null;
+};
 
 export const Route = createFileRoute("/_authenticated/messages")({
   head: () => ({

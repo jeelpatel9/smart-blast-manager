@@ -34,13 +34,13 @@ export const Route = createFileRoute("/_authenticated/contacts/import")({
 interface ParsedContact {
   name: string;
   phone: string;
-  email?: string;
-  city?: string;
-  state?: string;
-  company?: string;
-  product?: string;
+  email?: string | undefined;
+  city?: string | undefined;
+  state?: string | undefined;
+  company?: string | undefined;
+  product?: string | undefined;
   isValid: boolean;
-  error?: string;
+  error?: string | undefined;
 }
 
 function ContactsImportPage() {
@@ -62,7 +62,15 @@ function ContactsImportPage() {
         const data = new Uint8Array(event.target?.result as ArrayBuffer);
         const workbook = XLSX.read(data, { type: "array" });
         const firstSheetName = workbook.SheetNames[0];
+        if (!firstSheetName) {
+          toast.error("The selected file has no sheets");
+          return;
+        }
         const worksheet = workbook.Sheets[firstSheetName];
+        if (!worksheet) {
+          toast.error("The selected sheet is empty");
+          return;
+        }
         const jsonRows: Record<string, unknown>[] = XLSX.utils.sheet_to_json(worksheet, {
           defval: "",
         });
@@ -87,10 +95,10 @@ function ContactsImportPage() {
           };
 
           const name =
-            getKeyVal(["name", "customer", "contact"]) || String(row[keys[0]] || "").trim();
+            getKeyVal(["name", "customer", "contact"]) || String((keys[0] ? row[keys[0]] : "") || "").trim();
           const rawPhone =
             getKeyVal(["phone", "mobile", "number", "whatsapp"]) ||
-            String(row[keys[1]] || "").trim();
+            String((keys[1] ? row[keys[1]] : "") || "").trim();
           const email = getKeyVal(["email", "mail"]);
           const city = getKeyVal(["city", "town"]);
           const state = getKeyVal(["state", "region", "province"]);
@@ -143,7 +151,7 @@ function ContactsImportPage() {
         company: r.company || null,
         product: r.product || null,
         status: "ACTIVE" as const,
-        created_by: user.user?.id,
+        created_by: user.user?.id ?? null,
       }));
 
       const { data, error } = await supabase.from("contacts").insert(inserts).select();
@@ -152,7 +160,7 @@ function ContactsImportPage() {
       await supabase.from("activity_logs").insert({
         action: "contacts.imported",
         entity_type: "contacts",
-        user_id: user.user?.id,
+        user_id: user.user?.id ?? null,
         details: { count: data.length, filename: fileName },
       });
 
