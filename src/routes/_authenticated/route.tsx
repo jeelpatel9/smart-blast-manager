@@ -21,7 +21,7 @@ function AuthenticatedLayout() {
   });
 
   return (
-    <AppShell email={data?.email}>
+    <AppShell email={data?.email ?? null}>
       <Outlet />
     </AppShell>
   );

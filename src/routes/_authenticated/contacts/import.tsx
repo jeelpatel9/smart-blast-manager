@@ -143,7 +143,7 @@ function ContactsImportPage() {
         company: r.company || null,
         product: r.product || null,
         status: "ACTIVE" as const,
-        created_by: user.user?.id,
+        created_by: user.user?.id ?? null,
       }));
 
       const { data, error } = await supabase.from("contacts").insert(inserts).select();
@@ -152,7 +152,7 @@ function ContactsImportPage() {
       await supabase.from("activity_logs").insert({
         action: "contacts.imported",
         entity_type: "contacts",
-        user_id: user.user?.id,
+        user_id: user.user?.id ?? null,
         details: { count: data.length, filename: fileName },
       });
 

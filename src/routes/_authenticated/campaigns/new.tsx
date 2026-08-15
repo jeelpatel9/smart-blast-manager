@@ -137,7 +137,7 @@ function NewCampaignPage() {
           status,
           total_recipients: targetedContacts.length,
           recipient_filters: { status: targetStatus, product: targetProduct },
-          created_by: user.user?.id,
+          created_by: user.user?.id ?? null,
         })
         .select()
         .single();
@@ -170,7 +170,7 @@ function NewCampaignPage() {
         action: "campaign.created",
         entity_type: "campaigns",
         entity_id: campaign.id,
-        user_id: user.user?.id,
+        user_id: user.user?.id ?? null,
         details: { name: campaign.name, recipients: targetedContacts.length, status },
       });
 

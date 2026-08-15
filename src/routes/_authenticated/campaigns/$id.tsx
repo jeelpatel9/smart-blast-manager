@@ -84,7 +84,7 @@ function CampaignDetailPage() {
         action: "campaign.approved",
         entity_type: "campaigns",
         entity_id: id,
-        user_id: user.user?.id,
+        user_id: user.user?.id ?? null,
         details: { name: campaign?.name },
       });
     },
@@ -123,7 +123,7 @@ function CampaignDetailPage() {
           recipient_id: rec.id,
           phone: contactPhone,
           body: bodyText,
-          image_url: campaign?.image_url,
+          image_url: campaign?.image_url ?? null,
           status: "READ",
           sent_at: now,
           delivered_at: now,
@@ -138,7 +138,7 @@ function CampaignDetailPage() {
         action: "campaign.sent",
         entity_type: "campaigns",
         entity_id: id,
-        user_id: user.user?.id,
+        user_id: user.user?.id ?? null,
         details: { name: campaign?.name, recipients_count: recipients.length },
       });
     },

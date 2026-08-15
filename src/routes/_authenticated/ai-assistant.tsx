@@ -69,10 +69,10 @@ function AIAssistantPage() {
   const [productName, setProductName] = useState("VIP Pass");
   const [companyName, setCompanyName] = useState("Smart Blast");
   const [tone, setTone] = useState("friendly");
-  const [generatedCopy, setGeneratedCopy] = useState(TEMPLATE_PRESETS[0].text);
+  const [generatedCopy, setGeneratedCopy] = useState(TEMPLATE_PRESETS[0]!.text);
 
   function handleGenerate() {
-    const preset = TEMPLATE_PRESETS.find((p) => p.id === selectedPreset) || TEMPLATE_PRESETS[0];
+    const preset = TEMPLATE_PRESETS.find((p) => p.id === selectedPreset) ?? TEMPLATE_PRESETS[0]!;
     let text = preset.text;
     if (productName) text = text.replace(/\{\{product\}\}/g, productName);
     if (companyName) text = text.replace(/\{\{company\}\}/g, companyName);

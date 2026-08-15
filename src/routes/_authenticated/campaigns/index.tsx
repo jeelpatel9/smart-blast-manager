@@ -86,7 +86,7 @@ function CampaignsPage() {
         action: "campaign.approved",
         entity_type: "campaigns",
         entity_id: campaign.id,
-        user_id: user.user?.id,
+        user_id: user.user?.id ?? null,
         details: { name: campaign.name },
       });
     },

@@ -116,7 +116,7 @@ function ContactsPage() {
           company: formData.company || null,
           product: formData.product || null,
           status: formData.status,
-          created_by: user.user?.id,
+          created_by: user.user?.id ?? null,
         })
         .select()
         .single();
@@ -126,7 +126,7 @@ function ContactsPage() {
         action: "contact.created",
         entity_type: "contacts",
         entity_id: data.id,
-        user_id: user.user?.id,
+        user_id: user.user?.id ?? null,
         details: { name: data.name, phone: data.phone },
       });
       return data;
@@ -179,7 +179,7 @@ function ContactsPage() {
         action: "contact.deleted",
         entity_type: "contacts",
         entity_id: deletingContact.id,
-        user_id: user.user?.id,
+        user_id: user.user?.id ?? null,
         details: { name: deletingContact.name, phone: deletingContact.phone },
       });
     },

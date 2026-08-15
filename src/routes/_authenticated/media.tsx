@@ -88,7 +88,7 @@ function MediaLibraryPage() {
           public_url: publicUrl,
           mime_type: file.type,
           size_bytes: file.size,
-          uploaded_by: user.user?.id,
+          uploaded_by: user.user?.id ?? null,
         })
         .select()
         .single();
@@ -99,7 +99,7 @@ function MediaLibraryPage() {
         action: "media.uploaded",
         entity_type: "media",
         entity_id: mediaRecord.id,
-        user_id: user.user?.id,
+        user_id: user.user?.id ?? null,
         details: { file_name: file.name, size: file.size },
       });
 
